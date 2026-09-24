@@ -1,4 +1,7 @@
 from pr1_gr import gr
+from pr2_info import show_reference, show_explanation
+from pr1_func import opr
+
 eps = 1e-9
 
 
@@ -15,27 +18,6 @@ def inp(name):
             print("Нужно ввести число")
 
 
-def opr(n, a):
-    if n == 1:
-        return a[0][0]
-
-    if n == 2:
-        return a[0][0] * a[1][1] - a[0][1] * a[1][0]
-
-    s = 0
-
-    for i in range(n):
-        minor = []
-
-        for row in a[1:]:
-            minor.append(row[:i] + row[i + 1:])
-
-        if i % 2 == 0:
-            s += a[0][i] * opr(n - 1, minor)
-        else:
-            s -= a[0][i] * opr(n - 1, minor)
-
-    return s
 
 def solve(A, B):
     n = len(A)
@@ -128,6 +110,7 @@ def main():
         print()
         print("Меню:")
         print("0 - выйти")
+        print("1 - справочник")
         print("2 - решить СЛАУ второго порядка")
         print("3 - решить СЛАУ третьего порядка")
 
@@ -136,6 +119,9 @@ def main():
         match choice:
             case "0":
                 break
+
+            case "1":
+                show_reference()
 
             case "2" | "3":
                 n = int(choice)
@@ -171,8 +157,16 @@ def main():
                     else:
                         print("Система не имеет единственного решения")
 
+
                 else:
+
                     print_solution(x)
+
+                    answer = input("Показать ход решения? (1 - да, 0 - нет): ").strip()
+
+                    if answer == "1":
+                        show_explanation(A, B, x, opr)
+
                     if n == 2:
                         res = 0
 
